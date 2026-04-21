@@ -13,7 +13,6 @@ This project represents a professional business-style website for a financial se
 ## 📌 Project Overview
 
 
-    This website is designed to showcase a **financial services company** offering.
 
   - Life Insurance
   - Mortgage Protection
