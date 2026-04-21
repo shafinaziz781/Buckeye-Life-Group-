@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buckeye Life Group - Premium Insurance</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Poppins', sans-serif; line-height: 1.6; color: #333; overflow-x: hidden; background: #fdfdfd; }
+
+        /* HEADER & NAVIGATION */
+        header {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        nav {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 3rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #00d4ff, #ffd700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+        }
+
+        .nav-links { display: flex; list-style: none; gap: 2rem; }
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            position: relative;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+        .nav-links a::after {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px;
+            background: #ffd700; transition: width 0.3s;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover { color: #ffd700; }
+
+        .menu-toggle { display: none; flex-direction: column; cursor: pointer; }
+        .menu-toggle span { width: 25px; height: 3px; background: white; margin: 2px 0; }
+
+        /* PAGE SECTIONS DISPLAY LOGIC */
+        .page-section { display: none; padding-top: 80px; min-height: 100vh; animation: fadeIn 0.5s ease; }
+        .page-section.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* COMMON HERO STYLE */
+        .hero-banner {
+            background: linear-gradient(135deg, rgba(15,32,39,0.9) 0%, rgba(44,83,100,0.9) 100%), url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&q=80&w=1400');
+            background-size: cover; background-position: center;
+            color: white; text-align: center; padding: 120px 20px;
+        }
+        .hero-banner h1 { font-size: 3.5rem; margin-bottom: 1rem; color: #ffd700; }
+
+        /* BUTTONS */
+        .btn-primary {
+            background: linear-gradient(45deg, #00d4ff, #0099cc);
+            color: white; border: none; padding: 15px 35px;
+            border-radius: 50px; font-weight: 600; cursor: pointer;
+            text-decoration: none; display: inline-block; transition: 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,212,255,0.3); }
+
+        /* GRID STYLES */
+        .container { max-width: 1200px; margin: 0 auto; padding: 60px 20px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .card {
+            background: white; padding: 40px; border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.05); text-align: center;
+            border-top: 5px solid #00d4ff; transition: 0.3s;
+        }
+        .card:hover { transform: translateY(-10px); }
+        .card i { font-size: 3rem; color: #203a43; margin-bottom: 20px; }
+
+        /* CONTACT FORM */
+        .contact-container { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; }
+        .form-group { margin-bottom: 20px; }
+        input, textarea {
+            width: 100%; padding: 15px; border: 1px solid #ddd;
+            border-radius: 10px; font-family: inherit;
+        }
+
+        /* FOOTER */
+        footer { background: #0a0e17; color: #b0b3b8; padding: 60px 20px 20px; text-align: center; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; max-width: 1200px; margin: 0 auto 40px; text-align: left; }
+        footer h3 { color: white; margin-bottom: 20px; }
+        footer a { color: #b0b3b8; text-decoration: none; display: block; margin-bottom: 10px; }
+        footer a:hover { color: #ffd700; }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .menu-toggle { display: flex; }
+            .contact-container { grid-template-columns: 1fr; }
+            .hero-banner h1 { font-size: 2.2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo" onclick="showPage('home')">Buckeye Life Group</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="showPage('home')" id="link-home">Home</a></li>
+                <li><a onclick="showPage('services')" id="link-services">Services</a></li>
+                <li><a onclick="showPage('about')" id="link-about">About</a></li>
+                <li><a onclick="showPage('life')" id="link-life">Life Insurance</a></li>
+                <li><a onclick="showPage('health')" id="link-health">Health Insurance</a></li>
+                <li><a onclick="showPage('contact')" id="link-contact">Contact</a></li>
+            </ul>
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section id="home" class="page-section active">
+        <div class="hero-banner">
+            <h1>Protecting Your Tomorrow, Today</h1>
+            <p>Ohio's premier choice for comprehensive life and health insurance coverage.</p><br>
+            <button class="btn-primary" onclick="showPage('contact')">Get Free Quote</button>
+        </div>
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 40px; font-size: 2.5rem;">Why Choose Buckeye?</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-user-tie"></i>
+                    <h3>Expert Advice</h3>
+                    <p>Over 25 years of navigating the Ohio insurance landscape.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-hand-holding-heart"></i>
+                    <h3>Family First</h3>
+                    <p>Policies designed to protect what matters most to you.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Fast Claims</h3>
+                    <p>99% success rate in claim processing and support.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="services" class="page-section">
+        <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&q=80&w=1400');">
+            <h1>Our Core Services</h1>
+            <p>Tailored solutions for individuals, families, and businesses.</p>
+        </div>
+        <div class="container">
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Life Insurance</h3>
+                    <p>Term, Whole, and Universal plans for ultimate security.</p>
+                    <button class="btn-primary" onclick="showPage('life')">Details</button>
+                </div>
+                <div class="card">
+                    <i class="fas fa-heartbeat"></i>
+                    <h3>Health Insurance</h3>
+                    <p>Affordable individual and family healthcare plans.</p>
+                    <button class="btn-primary" onclick="showPage('health')">Details</button>
+                </div>
+                <div class="card">
+                    <i class="fas fa-users"></i>
+                    <h3>Group Insurance</h3>
+                    <p>Comprehensive employee benefits for Ohio businesses.</p>
+                    <button class="btn-primary" onclick="showPage('contact')">Quote</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="about" class="page-section">
+        <div class="hero-banner">
+            <h1>Our Story</h1>
+            <p>Trusted for over two decades in the heart of Columbus, OH.</p>
+        </div>
+        <div class="container">
+            <div class="contact-container">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800" style="width: 100%; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1);" alt="Team">
+                </div>
+                <div>
+                    <h2 style="color: #203a43; font-size: 2.2rem; margin-bottom: 20px;">Dedicated to Ohio Families</h2>
+                    <p>Buckeye Life Group was founded on the principle that insurance shouldn't be complicated. We are a locally owned agency that treats every client like a neighbor.</p><br>
+                    <p>Whether you're starting a family or planning for retirement, our team is here to ensure your legacy is protected. We work with top-rated carriers to find you the best rates.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="life" class="page-section">
+        <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1509059852496-f3822ae057bf?auto=format&fit=crop&q=80&w=1400');">
+            <h1>Life Insurance Plans</h1>
+            <p>Financial peace of mind for your loved ones.</p>
+        </div>
+        <div class="container">
+            <div class="grid-3">
+                <div class="card" style="border-top-color: #ffd700;">
+                    <h3>Term Life</h3>
+                    <p>Affordable protection for a specific period (10, 20, or 30 years).</p>
+                </div>
+                <div class="card" style="border-top-color: #ffd700;">
+                    <h3>Whole Life</h3>
+                    <p>Permanent coverage with a cash value component that grows over time.</p>
+                </div>
+                <div class="card" style="border-top-color: #ffd700;">
+                    <h3>Universal Life</h3>
+                    <p>Flexible premiums and death benefits to adapt to your life changes.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="health" class="page-section">
+        <div class="hero-banner" style="background-image: url('https://images.unsplash.com/photo-1505751172107-573225a94206?auto=format&fit=crop&q=80&w=1400');">
+            <h1>Health Insurance</h1>
+            <p>Quality medical coverage you can actually afford.</p>
+        </div>
+        <div class="container">
+            <h2 style="text-align: center; margin-bottom: 30px;">Coverage Options</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <i class="fas fa-pills"></i>
+                    <h3>Individual Plans</h3>
+                    <p>Customized health plans for freelancers and individuals.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-hospital-user"></i>
+                    <h3>Family Coverage</h3>
+                    <p>Extensive network access for you and your dependents.</p>
+                </div>
+                <div class="card">
+                    <i class="fas fa-file-medical"></i>
+                    <h3>Medicare</h3>
+                    <p>Expert guidance on Medicare supplements and advantage plans.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="page-section">
+        <div class="hero-banner">
+            <h1>Contact Us</h1>
+            <p>Get a personalized quote within 24 hours.</p>
+        </div>
+        <div class="container">
+            <div class="contact-container">
+                <div>
+                    <h2>Get In Touch</h2><br>
+                    <p><i class="fas fa-map-marker-alt"></i> Columbus, OH 43215</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@buckeyelifegroup.com</p>
+                </div>
+                <div style="background: #f4f7f8; padding: 30px; border-radius: 20px;">
+                    <div class="form-group"><input type="text" placeholder="Full Name"></div>
+                    <div class="form-group"><input type="email" placeholder="Email Address"></div>
+                    <div class="form-group"><input type="subject" placeholder="Subject"></div>
+                    <div class="form-group"><textarea rows="5" placeholder="How can we help?"></textarea></div>
+                    <button class="btn-primary" style="width: 100%;">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div>
+                <h3>Buckeye Life</h3>
+                <p>Protecting Ohio families for over 25 years with integrity and care.</p>
+            </div>
+            <div>
+                <h3>Quick Links</h3>
+                <a onclick="showPage('services')">Our Services</a>
+                <a onclick="showPage('about')">About Our Team</a>
+                <a onclick="showPage('contact')">Get a Quote</a>
+            </div>
+            <div>
+                <h3>Connect</h3>
+                <p>Follow us on LinkedIn</p>
+                <p>Visit our Columbus Office</p>
+            </div>
+        </div>
+        <p>&copy; 2026 Buckeye Life Group. All rights reserved.</p>
+    </footer>
+
+    <script>
+        function showPage(pageId) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => section.classList.remove('active'));
+
+            // Show target section
+            document.getElementById(pageId).classList.add('active');
+
+            // Update Nav Active State
+            const links = document.querySelectorAll('.nav-links a');
+            links.forEach(link => link.classList.remove('active'));
+            const activeLink = document.getElementById('link-' + pageId);
+            if(activeLink) activeLink.classList.add('active');
+
+            // Scroll to top
+            window.scrollTo(0, 0);
+
+            // Close mobile menu
+            document.getElementById('navLinks').classList.remove('active');
+        }
+
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
