@@ -1,6 +1,6 @@
-# 🚀 Buckeye Life Group - Portfolio Website
+# 🚀 Buckeye Life Group - Website
 
-A modern, responsive, and high-performance **portfolio website** built using HTML, CSS, and JavaScript.  
+A modern, responsive, and high-performance **portfolio website** built using HTML, CSS, and JavaScript. <br> 
 This project represents a professional business-style website for a financial services brand.
 
 
@@ -19,8 +19,6 @@ This project represents a professional business-style website for a financial se
   - Tax-Free Retirement Plans
   - Debt Elimination Strategies
   - Asset Protection
-
-The goal of this project is to create a **clean, modern UI with smooth user experience** and professional layout.
 
 
 
